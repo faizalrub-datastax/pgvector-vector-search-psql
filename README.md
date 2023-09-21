@@ -76,6 +76,7 @@ Get the nearest neighbors to a vector
 Get the nearest neighbors to a row
 
 `vectorpgsqldb=> SELECT * FROM items WHERE id != 1 ORDER BY embedding <-> (SELECT embedding FROM items WHERE id = 1) LIMIT 5;`
+
  id | embedding 
 ----+-----------
   3 | [1,2,3]
@@ -87,6 +88,7 @@ Get the nearest neighbors to a row
 Get rows within a certain distance
 
 `vectorpgsqldb=> SELECT * FROM items WHERE embedding <-> '[3,1,2]' < 5;`
+
  id | embedding 
 ----+-----------
   3 | [1,2,3]
