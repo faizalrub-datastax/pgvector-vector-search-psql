@@ -19,6 +19,8 @@ https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-cr
 # Execute following PSQL commands to review vector search 
 
 
+# Enable Vector Extension and insert Vectors
+
 `postgres=> CREATE DATABASE vectorpgsqldb;`
 
 `postgres=> \c vectorpgsqldb`
@@ -56,6 +58,11 @@ INSERT 0 2
 
 INSERT 0 2
 
+
+# Querying Vector Data
+
+Get the nearest neighbors to a vector
+
 `vectorpgsqldb=> SELECT * FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 5;`
 
  id | embedding 
@@ -66,6 +73,8 @@ INSERT 0 2
   2 | [4,5,6]
 (4 rows)
 
+Get the nearest neighbors to a row
+
 `vectorpgsqldb=> SELECT * FROM items WHERE id != 1 ORDER BY embedding <-> (SELECT embedding FROM items WHERE id = 1) LIMIT 5;`
  id | embedding 
 ----+-----------
@@ -74,12 +83,17 @@ INSERT 0 2
   2 | [4,5,6]
 (3 rows)
 
+
+Get rows within a certain distance
+
 `vectorpgsqldb=> SELECT * FROM items WHERE embedding <-> '[3,1,2]' < 5;`
  id | embedding 
 ----+-----------
   3 | [1,2,3]
   1 | [1,2,3]
 (2 rows)
+
+Get the distance
 
 `vectorpgsqldb=> SELECT embedding <-> '[3,1,2]' AS distance FROM items;`
      distance      
@@ -90,6 +104,9 @@ INSERT 0 2
  5.744562646538029
 (4 rows)
 
+
+inner product
+
 `vectorpgsqldb=> SELECT (embedding <#> '[3,1,2]') * -1 AS inner_product FROM items;`
  inner_product 
 ---------------
@@ -98,6 +115,8 @@ INSERT 0 2
             11
             29
 (4 rows)
+
+cosine similarity
 
 `vectorpgsqldb=> SELECT 1 - (embedding <=> '[3,1,2]') AS cosine_similarity FROM items;`
  cosine_similarity  
@@ -108,12 +127,15 @@ INSERT 0 2
  0.8832601106161003
 (4 rows)
 
+Average vectors
+
 `vectorpgsqldb=> SELECT AVG(embedding) FROM items;`
       avg      
 ---------------
  [2.5,3.5,4.5]
 (1 row)
 
+Average groups of vectors
                ^
 `vectorpgsqldb=> SELECT id, AVG(embedding) FROM items GROUP BY id;`
  id |   avg   
