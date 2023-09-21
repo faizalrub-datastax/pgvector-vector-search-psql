@@ -19,27 +19,27 @@ https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-cr
 # Execute following PSQL commands to review vector search 
 
 
-postgres=> CREATE DATABASE vectorpgsqldb;
+`postgres=> CREATE DATABASE vectorpgsqldb;`
 
-postgres=> \c vectorpgsqldb
+`postgres=> \c vectorpgsqldb`
 
 psql (15.4 (Homebrew), server 15.3)
 SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off)
 You are now connected to database "vectorpgsqldb" as user "citus".
 
-vectorpgsqldb=> CREATE EXTENSION vector;
+`vectorpgsqldb=> CREATE EXTENSION vector;`
 
 CREATE EXTENSION
 
-vectorpgsqldb=> CREATE TABLE items (id bigserial PRIMARY KEY, embedding vector(3));
+`vectorpgsqldb=> CREATE TABLE items (id bigserial PRIMARY KEY, embedding vector(3));`
 
 CREATE TABLE
 
-vectorpgsqldb=> INSERT INTO items (embedding) VALUES ('[1,2,3]'), ('[4,5,6]');
+`vectorpgsqldb=> INSERT INTO items (embedding) VALUES ('[1,2,3]'), ('[4,5,6]');`
 
 INSERT 0 2
 
-vectorpgsqldb=> SELECT * FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 5;
+`vectorpgsqldb=> SELECT * FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 5;`
 
  id | embedding 
 ----+-----------
@@ -47,16 +47,16 @@ vectorpgsqldb=> SELECT * FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 5;
   2 | [4,5,6]
 (2 rows)
 
-vectorpgsqldb=> INSERT INTO items (embedding) VALUES ('[1,2,3]'), ('[4,5,6]');
+`vectorpgsqldb=> INSERT INTO items (embedding) VALUES ('[1,2,3]'), ('[4,5,6]');`
 
 INSERT 0 2
 
-vectorpgsqldb=> INSERT INTO items (id, embedding) VALUES (1, '[1,2,3]'), (2, '[4,5,6]')
-    ON CONFLICT (id) DO UPDATE SET embedding = EXCLUDED.embedding;
+`vectorpgsqldb=> INSERT INTO items (id, embedding) VALUES (1, '[1,2,3]'), (2, '[4,5,6]')
+    ON CONFLICT (id) DO UPDATE SET embedding = EXCLUDED.embedding;`
 
 INSERT 0 2
 
-vectorpgsqldb=> SELECT * FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 5;
+`vectorpgsqldb=> SELECT * FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 5;`
 
  id | embedding 
 ----+-----------
@@ -66,7 +66,7 @@ vectorpgsqldb=> SELECT * FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 5;
   2 | [4,5,6]
 (4 rows)
 
-vectorpgsqldb=> SELECT * FROM items WHERE id != 1 ORDER BY embedding <-> (SELECT embedding FROM items WHERE id = 1) LIMIT 5;
+`vectorpgsqldb=> SELECT * FROM items WHERE id != 1 ORDER BY embedding <-> (SELECT embedding FROM items WHERE id = 1) LIMIT 5;`
  id | embedding 
 ----+-----------
   3 | [1,2,3]
@@ -74,14 +74,14 @@ vectorpgsqldb=> SELECT * FROM items WHERE id != 1 ORDER BY embedding <-> (SELECT
   2 | [4,5,6]
 (3 rows)
 
-vectorpgsqldb=> SELECT * FROM items WHERE embedding <-> '[3,1,2]' < 5;
+`vectorpgsqldb=> SELECT * FROM items WHERE embedding <-> '[3,1,2]' < 5;`
  id | embedding 
 ----+-----------
   3 | [1,2,3]
   1 | [1,2,3]
 (2 rows)
 
-vectorpgsqldb=> SELECT embedding <-> '[3,1,2]' AS distance FROM items;
+`vectorpgsqldb=> SELECT embedding <-> '[3,1,2]' AS distance FROM items;`
      distance      
 -------------------
  2.449489742783178
@@ -90,7 +90,7 @@ vectorpgsqldb=> SELECT embedding <-> '[3,1,2]' AS distance FROM items;
  5.744562646538029
 (4 rows)
 
-vectorpgsqldb=> SELECT (embedding <#> '[3,1,2]') * -1 AS inner_product FROM items;
+`vectorpgsqldb=> SELECT (embedding <#> '[3,1,2]') * -1 AS inner_product FROM items;`
  inner_product 
 ---------------
             11
@@ -99,7 +99,7 @@ vectorpgsqldb=> SELECT (embedding <#> '[3,1,2]') * -1 AS inner_product FROM item
             29
 (4 rows)
 
-vectorpgsqldb=> SELECT 1 - (embedding <=> '[3,1,2]') AS cosine_similarity FROM items;
+`vectorpgsqldb=> SELECT 1 - (embedding <=> '[3,1,2]') AS cosine_similarity FROM items;`
  cosine_similarity  
 --------------------
  0.7857142857142857
@@ -108,17 +108,14 @@ vectorpgsqldb=> SELECT 1 - (embedding <=> '[3,1,2]') AS cosine_similarity FROM i
  0.8832601106161003
 (4 rows)
 
-vectorpgsqldb=> SELECT AVG(embedding) FROM items;
+`vectorpgsqldb=> SELECT AVG(embedding) FROM items;`
       avg      
 ---------------
  [2.5,3.5,4.5]
 (1 row)
 
-vectorpgsqldb=> SELECT category_id, AVG(embedding) FROM items GROUP BY category_id;
-ERROR:  column "category_id" does not exist
-LINE 1: SELECT category_id, AVG(embedding) FROM items GROUP BY categ...
                ^
-vectorpgsqldb=> SELECT id, AVG(embedding) FROM items GROUP BY id;
+`vectorpgsqldb=> SELECT id, AVG(embedding) FROM items GROUP BY id;`
  id |   avg   
 ----+---------
   2 | [4,5,6]
