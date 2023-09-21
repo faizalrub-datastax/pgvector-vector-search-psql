@@ -96,6 +96,7 @@ Get rows within a certain distance
 Get the distance
 
 `vectorpgsqldb=> SELECT embedding <-> '[3,1,2]' AS distance FROM items;`
+
      distance      
 -------------------
  2.449489742783178
@@ -108,6 +109,7 @@ Get the distance
 inner product
 
 `vectorpgsqldb=> SELECT (embedding <#> '[3,1,2]') * -1 AS inner_product FROM items;`
+
  inner_product 
 ---------------
             11
@@ -119,6 +121,7 @@ inner product
 cosine similarity
 
 `vectorpgsqldb=> SELECT 1 - (embedding <=> '[3,1,2]') AS cosine_similarity FROM items;`
+
  cosine_similarity  
 --------------------
  0.7857142857142857
@@ -130,6 +133,7 @@ cosine similarity
 Average vectors
 
 `vectorpgsqldb=> SELECT AVG(embedding) FROM items;`
+
       avg      
 ---------------
  [2.5,3.5,4.5]
@@ -138,6 +142,7 @@ Average vectors
 Average groups of vectors
                ^
 `vectorpgsqldb=> SELECT id, AVG(embedding) FROM items GROUP BY id;`
+
  id |   avg   
 ----+---------
   2 | [4,5,6]
